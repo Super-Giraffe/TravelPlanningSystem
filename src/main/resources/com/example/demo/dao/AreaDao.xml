@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.AreaDao">
+    <resultMap id="areaMap" type="com.example.demo.POJO.Area">
+        <id property="id" column="id"></id>
+        <result property="areaName" column="area_name"></result>
+        <result property="address" column="address"></result>
+        <result property="price" column="price"></result>
+        <result property="spendTime" column="spend_time"></result>
+        <result property="territory" column="territory"></result>
+        <result property="description" column="description"></result>
+    </resultMap>
+    <select id="getAreaByName" resultMap="areaMap">
+        select * from area
+        <where>
+            <if test="areaName != null">area_name = #{areaName}</if>
+        </where>
+        limit ${start},${limit};
+    </select>
+
+    <select id="getAllArea" resultMap="areaMap">
+        select * from area;
+    </select>
+
+    <insert id="addArea" parameterType="area" useGeneratedKeys="true" keyProperty="id">
+        insert into area (area_name, address, price, spend_time, territory, description) VALUES (#{areaName},#{address},#{price},#{spendTime},#{territory},#{description});
+    </insert>
+
+    <update id="updateArea" parameterType="area">
+        update area
+        <set>
+            <if test="areaName != null">area_name = #{areaName}, </if>
+            <if test="address != null">address = #{address}, </if>
+            <if test="price != null">price = #{price}, </if>
+            <if test="spendTime != null">spend_time = #{spendTime} </if>
+            <if test="territory != null">territory = #{territory} </if>
+            <if test="description != null">description = #{description} </if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="deleteArea" parameterType="int">
+        delete from area where id = #{id}
+    </delete>
+
+    <select id="getAreaByTerritory" resultMap="areaMap">
+        select * from area where territory = #{territory};
+    </select>
+
+    <select id="getAreaById" resultMap="areaMap">
+        select * from area where id = #{id};
+    </select>
+</mapper>

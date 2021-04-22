@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserDao">
+    <resultMap id="userMap" type="com.example.demo.POJO.User">
+        <id property="id" column="id"></id>
+        <result property="userName" column="user_name"></result>
+        <result property="password" column="password"></result>
+        <result property="age" column="age"></result>
+        <result property="phone" column="phone"></result>
+        <result property="sexId" column="sex_id"></result>
+        <result property="admin" column="admin"></result>
+    </resultMap>
+
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="id">
+        insert into user (id, user_name, password, age, phone, sex_id)
+        values (#{id}, #{userName}, #{password}, #{age}, #{phone}, #{sexId});
+    </insert>
+
+    <select id="getUser" parameterType="int" resultMap="userMap">
+        select * from user where id = #{id};
+    </select>
+
+    <select id="getAllUser" resultMap="userMap">
+        select * from user;
+    </select>
+
+    <update id="updateUser" parameterType="user">
+        update user
+        <set>
+            <if test="userName != null">user_name = #{userName}</if>
+            <if test="password != null">password = #{password}</if>
+            <if test="age != null">age = #{age}</if>
+            <if test="phone != null">phone = #{phone}</if>
+            <if test="sexId != null">sex_id = #{sexId}</if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id = #{id};
+    </delete>
+
+    <select id="getUserByName" parameterType="String" resultMap="userMap">
+        select * from user where user_name = #{userName};
+    </select>
+</mapper>
