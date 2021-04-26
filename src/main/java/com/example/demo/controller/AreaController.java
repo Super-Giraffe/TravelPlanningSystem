@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
 import com.example.demo.POJO.Area;
+import com.example.demo.POJO.User;
 import com.example.demo.ant_algorithm.Plan;
+import com.example.demo.request.RequestInfo;
 import com.example.demo.service.AreaService;
+import com.example.demo.service.UserService;
 import com.example.demo.vo.AreaVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,11 +26,22 @@ public class AreaController {
     @Autowired
     private AreaService areaService;
 
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/view")
+    public ModelAndView viewPage(){
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("newPage2");
+        mav.addAllObjects(getResultMap("", 1));
+        return mav;
+    }
+
     @RequestMapping("/getAreaByName")
     public ModelAndView getAreaByName(String name, Integer start){
         ModelAndView mav = new ModelAndView();
         mav.addAllObjects(getResultMap(name, start));
-        mav.setViewName("index2");
+        mav.setViewName("newPage2");
         return mav;
     }
 
@@ -36,7 +49,7 @@ public class AreaController {
     public ModelAndView delete(Integer id, Integer start){
         ModelAndView mav = new ModelAndView();
         areaService.deleteAreaInfo(id);
-        mav.addAllObjects(getResultMap(null, start));
+        mav.addAllObjects(getResultMap("", start));
         mav.setViewName("index2");
         return mav;
     }
@@ -45,7 +58,7 @@ public class AreaController {
     public ModelAndView insert(Area area, Integer start){
         ModelAndView mav = new ModelAndView();
         areaService.addAreaInfo(area);
-        mav.addAllObjects(getResultMap(null, start));
+        mav.addAllObjects(getResultMap("", start));
         mav.setViewName("index2");
         return mav;
     }
@@ -54,7 +67,7 @@ public class AreaController {
     public ModelAndView update(Area area, Integer start){
         ModelAndView mav = new ModelAndView();
         areaService.updateAreaInfo(area);
-        mav.addAllObjects(getResultMap(null, start));
+        mav.addAllObjects(getResultMap("", start));
         mav.setViewName("index2");
         return mav;
     }
@@ -69,17 +82,34 @@ public class AreaController {
         return mav;
     }
 
-    private HashMap<String, Object> getResultMap(String name, Integer start){
-        if ("".equals(name)){
-            name = null;
+    @RequestMapping("changePwd")
+    public ModelAndView changePwd(Integer id, String password1, String password2, Integer flag){
+        ModelAndView mav = new ModelAndView();
+        User user = userService.getUserInfo(id);
+        user.setPassword(password1);
+        userService.updateUserInfo(user);
+        switch (flag){
+            case 2:
+                mav.setViewName("newPage3");
+                mav.addObject("user", user);
+                break;
+            default:
+                mav.setViewName("login");
+                break;
         }
+        return mav;
+    }
+
+    private HashMap<String, Object> getResultMap(String name, Integer start){
         HashMap<String, Object> result = new HashMap<>();
-        List<Area> areas = areaService.getAreaByName(name, start, 10);
+        List<Area> areas = areaService.getAreaByName("%" + name + "%", start, 10);
         List<Area> all = areaService.getAllAreas();
-        result.put("all", all);
+        result.put("all", all.size());
         result.put("areas", areas);
         result.put("start", start);
         result.put("name", name);
+        User user = (User) RequestInfo.getInfo("user");
+        result.put("user", user);
         return result;
     }
 

@@ -122,9 +122,15 @@
                             <label>游玩时间</label>
                             <input type="text" name="spendTime" id="spendTime" class="form-control" placeholder="请输入游玩时间" required autofocus><br>
                             <label>所在行政区</label>
-                            <input type="text" name="spendTime" id="territory" class="form-control" placeholder="请输入所在行政区" required autofocus><br>
+                            <select name="territory" id="territory" class="form-control" required autofocus>
+                                <option value ="西湖区">西湖区</option>
+                                <option value ="上城区">上城区</option>
+                                <option value="余杭区">余杭区</option>
+                                <option value="滨江区">滨江区</option>
+                                <option value="其他">其他</option>
+                            </select>
                             <label>详细描述</label>
-                            <input type="text" name="spendTime" id="description" class="form-control" placeholder="请输入详细描述" required autofocus><br>
+                            <input type="text" name="description" id="description" class="form-control" placeholder="请输入详细描述" required autofocus><br>
                             <input type="hidden" name="start" value="<%=start%>">
                             <div style="display: flex;justify-content: flex-end">
                                 <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>

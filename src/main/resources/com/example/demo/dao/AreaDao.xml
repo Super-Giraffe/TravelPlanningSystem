@@ -15,7 +15,7 @@
     <select id="getAreaByName" resultMap="areaMap">
         select * from area
         <where>
-            <if test="areaName != null">area_name = #{areaName}</if>
+            <if test="areaName != null">area_name like #{areaName}</if>
         </where>
         limit ${start},${limit};
     </select>
@@ -34,8 +34,8 @@
             <if test="areaName != null">area_name = #{areaName}, </if>
             <if test="address != null">address = #{address}, </if>
             <if test="price != null">price = #{price}, </if>
-            <if test="spendTime != null">spend_time = #{spendTime} </if>
-            <if test="territory != null">territory = #{territory} </if>
+            <if test="spendTime != null">spend_time = #{spendTime}, </if>
+            <if test="territory != null">territory = #{territory}, </if>
             <if test="description != null">description = #{description} </if>
         </set>
         where id = #{id};
