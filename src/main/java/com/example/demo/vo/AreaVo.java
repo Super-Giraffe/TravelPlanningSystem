@@ -11,4 +11,10 @@ public class AreaVo {
     private String desc;
 
     private String territory;
+
+    private String address;
+
+    private Integer price;
+
+    private Integer spendTime;
 }

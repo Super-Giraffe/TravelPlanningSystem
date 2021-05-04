@@ -119,7 +119,7 @@
                     <a href="/area/getAreaByTerritory?territory=其他" target="leftFrame">其他</a>
                 </div>
                 <div class="pull-left">
-                    <table class="table table-hover">
+                    <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>景点名称</th>
@@ -135,15 +135,15 @@
                                 out.print("<td>"+areaVo.getAreaName()+"</td>");
                                 out.print("<td><img src='\\pic\\" + areaVo.getAreaName() + ".jpg' width = '200px'></td>");
                                 out.print("<td><a href='/area/addTrip?id="+ areaVo.getId() + "&territory=" + areaVo.getTerritory() + "'><button class='btn btn-primary'>添加行程</button></a>");
-                                out.print("<button class=\"btn btn-primary \" data-toggle=\"modal\" data-target=\"#detailModal" + i + "\">景点详情</button>" +
-                                        "<div class=\"modal fade\" id=\"detailModal" + i + "\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">" +
-                                        "<div class=\"modal-dialog\">" +
-                                        "<div class=\"modal-content\">" +
-                                        "<div class=\"modal-header\">" +
-                                        "<h4 class=\"modal-title\" id=\"myModalLabel\">景点详情</h4>" +
-                                        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>" +
+                                out.print("<button class='btn btn-primary ' data-toggle='modal' data-target='#detailModal" + i + "'>景点详情</button>" +
+                                        "<div class='modal fade' id='detailModal" + i + "' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>" +
+                                        "<div class='modal-dialog'>" +
+                                        "<div class='modal-content'>" +
+                                        "<div class='modal-header'>" +
+                                        "<h4 class='modal-title' id='myModalLabel'>景点详情</h4>" +
+                                        "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>" +
                                         "</div>" +
-                                        "<div class=\"modal-body\">" +
+                                        "<div class='modal-body'>" +
                                         areaVo.getDesc() +
                                         "</div>" +
                                         "</div>" +

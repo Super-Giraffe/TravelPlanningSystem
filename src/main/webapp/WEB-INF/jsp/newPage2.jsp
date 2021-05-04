@@ -42,6 +42,9 @@
         .right{
             float: right;
         }
+        .left{
+            float: left;
+        }
     </style>
 </head>
 <%
@@ -116,6 +119,55 @@
         </div>
     </div>
 </nav>
+<div>
+    <button class="btn btn-primary left" data-toggle="modal" data-target="#addModal">添加景点</button>
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addModalLabel">添加景点信息</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/area/insert" class="form-signin" method="post">
+                        <label>景点名称</label>
+                        <input type="text" name="areaName" id="areaName" class="form-control" placeholder="请输入景点名称" required autofocus><br>
+                        <label>地址</label>
+                        <input type="text" name="address" id="address" class="form-control" placeholder="请输入地址" required autofocus><br>
+                        <label>门票价格</label>
+                        <input type="text" name="price" id="price" class="form-control" placeholder="请输入门票价格" required autofocus><br>
+                        <label>游玩时间</label>
+                        <input type="text" name="spendTime" id="spendTime" class="form-control" placeholder="请输入游玩时间" required autofocus><br>
+                        <label>所在行政区</label>
+                        <select name="territory" id="territory" class="form-control" required autofocus>
+                            <option value ="西湖区">西湖区</option>
+                            <option value ="上城区">上城区</option>
+                            <option value="余杭区">余杭区</option>
+                            <option value="滨江区">滨江区</option>
+                            <option value="其他">其他</option>
+                        </select>
+                        <label>详细描述</label>
+                        <input type="text" name="description" id="description" class="form-control" placeholder="请输入详细描述" required autofocus><br>
+                        <input type="hidden" name="start" value="<%=start%>">
+                        <div style="display: flex;justify-content: flex-end">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <form action="/area/getAreaByName" class="form-inline">
+            <div class="form-group search">
+                <input type="text" name="name" value="<%=name%>" class="form-control" placeholder="请输入景区名称"/>
+                <input type="hidden" name="start" value="<%=start%>">
+                <input type="submit" name="submit" class="btn" value="搜索" />
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -137,7 +189,7 @@
             out.print("<td>"+area.getSpendTime()+"</td>");
             out.print("<td>"+area.getTerritory()+"</td>");
             out.print("<td>" +
-                    "<button class='icon' data-toggle='modal' data-target='#editModal" + edit + "'>编辑</button>" +
+                    "<button class='btn btn-primary' data-toggle='modal' data-target='#editModal" + edit + "'><span class='glyphicon glyphicon-edit'></span>    编辑</button>" +
                     "<div class='modal fade' id='editModal" + edit + "' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>" +
                     "<div class='modal-dialog'>" +
                     "<div class='modal-content'>" +
@@ -171,7 +223,7 @@
                     "</div>" +
                     "</div>" +
                     "</td>");
-            out.print("<td><a href='/area/delete?id=" + area.getId() + "&start=" + start +"' onclick='javascript:return del();'><button class='btn btn-danger'>删除</button></a></td>");
+            out.print("<td><a href='/area/delete?id=" + area.getId() + "&start=" + start +"' onclick='javascript:return del();'><button class='btn btn-danger'><span class='glyphicon glyphicon-trash'></span>    删除</button></a></td>");
             out.print("</tr>");
             edit++;
         }

@@ -9,6 +9,7 @@ import com.example.demo.vo.AreaVo;
 import com.example.demo.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +40,7 @@ public class UserController {
     public ModelAndView userPage(){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("newPage3");
+        mav.addObject("user", RequestInfo.getInfo("user"));
         mav.addObject("user", RequestInfo.getInfo("user"));
         return mav;
     }
@@ -100,9 +102,12 @@ public class UserController {
                 areaVo.setAreaName(area.getAreaName());
                 areaVo.setDesc(area.getDescription());
                 areaVo.setTerritory(area.getTerritory());
+                areaVo.setAddress(area.getAddress());
+                areaVo.setPrice(area.getPrice());
+                areaVo.setSpendTime(area.getSpendTime());
                 areaVos.add(areaVo);
             }
-            mav.setViewName("index1");
+            mav.setViewName("newPage");
             mav.addObject("areas" ,areaVos);
         }
         RequestInfo.setInfo("user", user);

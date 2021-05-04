@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -50,7 +51,7 @@ public class AreaController {
         ModelAndView mav = new ModelAndView();
         areaService.deleteAreaInfo(id);
         mav.addAllObjects(getResultMap("", start));
-        mav.setViewName("index2");
+        mav.setViewName("newPage2");
         return mav;
     }
 
@@ -59,7 +60,7 @@ public class AreaController {
         ModelAndView mav = new ModelAndView();
         areaService.addAreaInfo(area);
         mav.addAllObjects(getResultMap("", start));
-        mav.setViewName("index2");
+        mav.setViewName("newPage2");
         return mav;
     }
 
@@ -68,17 +69,15 @@ public class AreaController {
         ModelAndView mav = new ModelAndView();
         areaService.updateAreaInfo(area);
         mav.addAllObjects(getResultMap("", start));
-        mav.setViewName("index2");
+        mav.setViewName("newPage2");
         return mav;
     }
 
     @RequestMapping("getAreaByTerritory")
     public ModelAndView getAreaByTerritory(String territory){
         ModelAndView mav = new ModelAndView();
-        List<AreaVo> areaVos = theAreasInTerritory(territory);
-        mav.setViewName("index1");
-        mav.addObject("areas" ,areaVos);
-        mav.addObject("tripList", tripList);
+        mav.setViewName("newPage");
+        mav.addAllObjects(getResultMap(territory));
         return mav;
     }
 
@@ -108,8 +107,7 @@ public class AreaController {
         result.put("areas", areas);
         result.put("start", start);
         result.put("name", name);
-        User user = (User) RequestInfo.getInfo("user");
-        result.put("user", user);
+        result.put("user", RequestInfo.getInfo("user"));
         return result;
     }
 
@@ -124,21 +122,18 @@ public class AreaController {
 
     @RequestMapping("addTrip")
     public ModelAndView addTrip(Integer id, String territory){
-        List<AreaVo> areas = theAreasInTerritory(territory);
         Area area = areaService.getAreaById(id);
         if (isContained(area) == -1){
             tripList.add(area);
         }
         ModelAndView mav = new ModelAndView();
-        mav.addObject("tripList", tripList);
-        mav.addObject("areas", areas);
-        mav.setViewName("index1");
+        mav.addAllObjects(getResultMap(territory));
+        mav.setViewName("newPage");
         return mav;
     }
 
     @RequestMapping("addFirst")
     public ModelAndView addFirst(Integer id, String territory){
-        List<AreaVo> areas = theAreasInTerritory(territory);
         Area area = areaService.getAreaById(id);
         int index = isContained(area);
         if (index != -1){
@@ -146,24 +141,21 @@ public class AreaController {
         }
         tripList.add(0, area);
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("index1");
-        mav.addObject("tripList", tripList);
-        mav.addObject("areas", areas);
+        mav.setViewName("newPage");
+        mav.addAllObjects(getResultMap(territory));
         return mav;
     }
 
     @RequestMapping("removeTrip")
     public ModelAndView removeTrip(Integer id, String territory){
-        List<AreaVo> areas = theAreasInTerritory(territory);
         for (int i = 0; i < tripList.size(); i++){
             if (tripList.get(i).getId() == id){
                 tripList.remove(i);
             }
         }
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("index1");
-        mav.addObject("tripList", tripList);
-        mav.addObject("areas", areas);
+        mav.setViewName("newPage");
+        mav.addAllObjects(getResultMap(territory));
         return mav;
     }
 
@@ -185,8 +177,20 @@ public class AreaController {
             areaVo.setAreaName(area.getAreaName());
             areaVo.setDesc(area.getDescription());
             areaVo.setTerritory(area.getTerritory());
+            areaVo.setAddress(area.getAddress());
+            areaVo.setPrice(area.getPrice());
+            areaVo.setSpendTime(area.getSpendTime());
             areaVos.add(areaVo);
         }
         return areaVos;
+    }
+
+    private Map<String, Object> getResultMap(String territory){
+        Map<String, Object> resultMap = new HashMap<>();
+        List<AreaVo> areas = theAreasInTerritory(territory);
+        resultMap.put("tripList", tripList);
+        resultMap.put("areas", areas);
+        resultMap.put("user", RequestInfo.getInfo("user"));
+        return resultMap;
     }
 }
