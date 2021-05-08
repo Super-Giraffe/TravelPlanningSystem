@@ -82,11 +82,12 @@ public class AreaController {
     }
 
     @RequestMapping("changePwd")
-    public ModelAndView changePwd(Integer id, String password1, String password2, Integer flag){
+    public ModelAndView changePwd(Integer id, String password1, Integer flag){
         ModelAndView mav = new ModelAndView();
         User user = userService.getUserInfo(id);
         user.setPassword(password1);
         userService.updateUserInfo(user);
+        RequestInfo.setInfo("user", user);
         switch (flag){
             case 2:
                 mav.setViewName("newPage3");
@@ -116,7 +117,7 @@ public class AreaController {
         ModelAndView mav = new ModelAndView();
         List<String> areaNames = tripList.stream().map(Area::getAreaName).collect(Collectors.toList());
         Plan.getShortestPath(areaNames);
-        mav.setViewName("success");
+        mav.setViewName("trip");
         return mav;
     }
 

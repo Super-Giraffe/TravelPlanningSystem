@@ -18,19 +18,12 @@
                 <label>用户名</label>
                 <input type="text" name="userName" id="userName" class="form-control" placeholder="请输入用户名" required autofocus><br>
                 <label>密码</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me" checked="checked">记住密码
-                    </label>
-                </div>
+                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required><br>
                 <button type="submit" class="btn btn-primary" id="btn-login">登录</button>
                 <a href="/user/registerPage" rel="external nofollow" class="btn btn-default">注册</a>
             </form>
             <%
                 String message = (String) request.getAttribute("message");
-            %>
-            <%
                 if(message != null){
                     out.println("<div class='alert alert-danger' role='alert'>"+ message + "</div>");
                 }

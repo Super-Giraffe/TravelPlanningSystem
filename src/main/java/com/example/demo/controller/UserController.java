@@ -116,12 +116,23 @@ public class UserController {
         return mav;
     }
 
+    @RequestMapping("/flag/{flag}")
+    public ModelAndView getFlag(@PathVariable int flag){
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("newPage3");
+        mav.addObject("user", RequestInfo.getInfo("user"));
+        mav.addObject("flag", flag);
+        return mav;
+    }
+
     @RequestMapping("update")
     public ModelAndView updateUser(UserVo userVo){
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("newPage2");
+        mav.setViewName("newPage3");
         User user = copyUser(userVo);
         userService.updateUserInfo(user);
+        RequestInfo.setInfo("user", userService.getUserInfo(userVo.getId()));
+        mav.addObject("user", RequestInfo.getInfo("user"));
         return mav;
     }
 
