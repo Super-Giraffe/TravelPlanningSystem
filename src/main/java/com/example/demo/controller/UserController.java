@@ -41,7 +41,6 @@ public class UserController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("newPage3");
         mav.addObject("user", RequestInfo.getInfo("user"));
-        mav.addObject("user", RequestInfo.getInfo("user"));
         return mav;
     }
 
@@ -125,7 +124,7 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping("update")
+    @RequestMapping("/update")
     public ModelAndView updateUser(UserVo userVo){
         ModelAndView mav = new ModelAndView();
         mav.setViewName("newPage3");
