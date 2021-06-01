@@ -180,8 +180,8 @@
     </thead>
     <tbody>
     <%
+        int edit = 0;
         for (Area area : areas){
-            int edit = 0;
             out.print("<tr>");
             out.print("<td>"+area.getAreaName()+"</td>");
             out.print("<td>"+area.getAddress()+"</td>");

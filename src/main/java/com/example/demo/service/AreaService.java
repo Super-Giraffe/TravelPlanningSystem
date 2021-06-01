@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.POJO.Area;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +29,10 @@ public interface AreaService {
 
     //根据id查询景区
     Area getAreaById(Integer id);
+
+    int insertUserAndArea(Integer userId, Integer areaId);
+
+    int deleteUserAndArea(Integer userId, Integer areaId);
+
+    List<Area> selectUserAndArea(Integer userId);
 }

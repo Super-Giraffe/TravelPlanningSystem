@@ -116,7 +116,9 @@ public class AreaController {
     public ModelAndView getShortestPath() throws Exception {
         ModelAndView mav = new ModelAndView();
         List<String> areaNames = tripList.stream().map(Area::getAreaName).collect(Collectors.toList());
-        Plan.getShortestPath(areaNames);
+        List<List<String>> result = Plan.getShortestPath(areaNames);
+        mav.addObject("places", result.get(1));
+        mav.addObject("lines", result.get(0));
         mav.setViewName("trip");
         return mav;
     }
@@ -124,8 +126,9 @@ public class AreaController {
     @RequestMapping("addTrip")
     public ModelAndView addTrip(Integer id, String territory){
         Area area = areaService.getAreaById(id);
+        User user = (User) RequestInfo.getInfo("user");
         if (isContained(area) == -1){
-            tripList.add(area);
+            areaService.insertUserAndArea(user.getId(), id);
         }
         ModelAndView mav = new ModelAndView();
         mav.addAllObjects(getResultMap(territory));
@@ -135,23 +138,24 @@ public class AreaController {
 
     @RequestMapping("addFirst")
     public ModelAndView addFirst(Integer id, String territory){
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("newPage");
+        mav.addAllObjects(getResultMap(territory));
         Area area = areaService.getAreaById(id);
         int index = isContained(area);
         if (index != -1){
             tripList.remove(index);
         }
         tripList.add(0, area);
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("newPage");
-        mav.addAllObjects(getResultMap(territory));
         return mav;
     }
 
     @RequestMapping("removeTrip")
     public ModelAndView removeTrip(Integer id, String territory){
+        User user = (User) RequestInfo.getInfo("user");
         for (int i = 0; i < tripList.size(); i++){
             if (tripList.get(i).getId() == id){
-                tripList.remove(i);
+                areaService.deleteUserAndArea(user.getId(), id);
             }
         }
         ModelAndView mav = new ModelAndView();
@@ -187,8 +191,10 @@ public class AreaController {
     }
 
     private Map<String, Object> getResultMap(String territory){
+        User user = (User) RequestInfo.getInfo("user");
         Map<String, Object> resultMap = new HashMap<>();
         List<AreaVo> areas = theAreasInTerritory(territory);
+        tripList = areaService.selectUserAndArea(user.getId());
         resultMap.put("tripList", tripList);
         resultMap.put("areas", areas);
         resultMap.put("user", RequestInfo.getInfo("user"));

@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.POJO.Area;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,10 @@ public interface AreaDao {
     int deleteArea(Integer id);
 
     List<Area> getAreaByTerritory(String territory);
+
+    int insertUserAndArea(@Param("userId") Integer userId, @Param("areaId") Integer areaId);
+
+    int deleteUserAndArea(@Param("userId") Integer userId, @Param("areaId") Integer areaId);
+
+    List<Area> selectUserAndArea(Integer userId);
 }

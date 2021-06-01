@@ -52,4 +52,16 @@
     <select id="getAreaById" resultMap="areaMap">
         select * from area where id = #{id};
     </select>
+
+    <insert id="insertUserAndArea">
+        insert into user_area (user_id, area_id) VALUES (#{userId}, #{areaId});
+    </insert>
+
+    <delete id="deleteUserAndArea">
+        delete from user_area where user_id = #{userId} and area_id = #{areaId};
+    </delete>
+
+    <select id="selectUserAndArea" resultType="java.util.List" resultMap="areaMap">
+        select * from area where id in (select area_id from user_area where user_id = #{userId});
+    </select>
 </mapper>

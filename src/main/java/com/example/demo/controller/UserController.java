@@ -107,6 +107,7 @@ public class UserController {
                 areaVos.add(areaVo);
             }
             mav.setViewName("newPage");
+            mav.addObject("tripList", areaService.selectUserAndArea(user.getId()));
             mav.addObject("areas" ,areaVos);
         }
         RequestInfo.setInfo("user", user);

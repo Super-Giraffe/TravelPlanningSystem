@@ -48,4 +48,19 @@ public class AreaServiceImpl implements AreaService {
     public Area getAreaById(Integer id) {
         return areaDao.getAreaById(id);
     }
+
+    @Override
+    public int insertUserAndArea(Integer userId, Integer areaId) {
+        return areaDao.insertUserAndArea(userId, areaId);
+    }
+
+    @Override
+    public int deleteUserAndArea(Integer userId, Integer areaId) {
+        return areaDao.deleteUserAndArea(userId, areaId);
+    }
+
+    @Override
+    public List<Area> selectUserAndArea(Integer userId) {
+        return areaDao.selectUserAndArea(userId);
+    }
 }

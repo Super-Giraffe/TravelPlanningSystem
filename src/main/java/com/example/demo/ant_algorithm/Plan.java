@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Plan {
@@ -37,9 +39,15 @@ public class Plan {
         System.out.println("耗时" + (end - start) + "ms");
     }
 
-    public static List<String> getShortestPath(List<String> places) throws Exception{
+    public static List<List<String>> getShortestPath(List<String> places) throws Exception{
+        List<List<String>> result = new ArrayList<>();
         //计算各地点的经纬度
         List<LocationEntity> lists = Match.batchQueryLocation(places);
+        //地址-坐标映射表
+        Map<String, String> locationMap = new HashMap<>();
+        for (LocationEntity entity: lists){
+            locationMap.put(entity.getAddress(), entity.getLocation());
+        }
         //获取距离矩阵
         Double[][] distances = Match.returnShortCut(lists);
         //调用蚁群算法，选出最短路径
@@ -55,15 +63,21 @@ public class Plan {
         Ant ant = tsp.m_bestAnt;
         System.out.println("蚂蚁走过最佳的路径：" + ant.m_dbPathLength);
         List<String> shortestPath = new ArrayList<>();
+        List<String> shortestPlace = new ArrayList<>();
         String path = "";
         for (int i = 0; i < ant.m_nPath.length; i++){
-            shortestPath.add(places.get(ant.m_nPath[i]));
-            path += places.get(ant.m_nPath[i]) + "-";
+            shortestPlace.add(places.get(ant.m_nPath[i]));
+            String location = locationMap.get(places.get(ant.m_nPath[i]));
+            shortestPath.add(location);
+            path += places.get(ant.m_nPath[i]) + "(" + location + ")" + "-";
         }
         path += places.get(0);
-        shortestPath.add(places.get(0));
+        shortestPath.add(locationMap.get(places.get(ant.m_nPath[0])));
+        shortestPlace.add(places.get(ant.m_nPath[0]));
         System.out.println(path);
-        return shortestPath;
+        result.add(shortestPlace);
+        result.add(shortestPath);
+        return result;
     }
 
     public static void getShortestPathByTspData() throws Exception {
